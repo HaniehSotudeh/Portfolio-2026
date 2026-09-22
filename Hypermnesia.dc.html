@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300&display=swap" rel="stylesheet">
+  <style>
+    body{margin:0;background:#fff;}
+    a{color:#111;text-decoration:none;}
+    a:hover{color:rgba(0,0,0,0.55);}
+    ::selection{background:#111;color:#fff;}
+    img{max-width:100%;}
+  </style>
+</helmet>
+
+<div style="background:#fff;color:#000;font-family:'Lato',sans-serif;min-height:100vh;width:100%;box-sizing:border-box;display:flex;flex-direction:column;">
+
+  <nav style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;padding:22px 32px;margin:15px;">
+    <a href="Home.dc.html" style="display:flex;flex-direction:column;line-height:1.3;">
+      <span style="font-size:20px;font-weight:700;letter-spacing:0.01em;">Hanieh Sotudeh</span>
+      <span style="font-size:12px;font-weight:300;opacity:0.6;">Architect</span>
+    </a>
+    <div style="display:flex;gap:28px;align-items:center;font-size:13px;letter-spacing:0.04em;text-transform:uppercase;">
+      <a href="CV.dc.html">CV</a>
+      <a href="School Projects.dc.html">School Projects</a>
+      <a href="Professional Work.dc.html">Professional Work</a>
+      <a href="Parametric Fun.dc.html">Parametric Fun</a>
+    </div>
+  </nav>
+
+  <div style="flex:1;" ref="{{ setRoot }}">
+    <div style="max-width:1320px;margin:0 auto;padding:0 24px;box-sizing:border-box;">
+      <a href="School Projects.dc.html" style="cursor:pointer;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.5;margin-bottom:24px;display:inline-block;">← Back to School Projects</a>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;align-items:start;margin-top:40px;">
+        <div style="margin-bottom:5vh;margin-left:2vh;">
+          <h1 style="font-size:40px;font-weight:500;margin:24px 0;line-height:1.2;">Hypermnesia</h1>
+          <div style="font-size:18px;font-weight:400;line-height:1.5;margin-bottom:16px;color:#060808;">Tehran, Iran<br>Spring 2018<br>Individual, Semester-long<br>Instructor: Ali Asghar Adibi and Mahdi Babaie<br>Awarded “one of the best projects in the Studio”</div>
+          <p style="font-family:'Lato light';font-size:18px;font-weight:400;line-height:1.5;margin:0 0 18px;color:#060808;">Educating at the university is considered as a glorious period in every person’s life. People attend this place to not only achieve a remarkable degree and augment their education but also make beautiful memories as well as friends. Signs, centers, and programs related to the university will make these hypermnesia by producing vivid memories or recalls of the past.</p>
+          <div style="font-size:18px;font-weight:400;vertical-align:sub;">Revit | SketchUp | AutoCad | V-ray | Photoshop</div>
+        </div>
+        <div style="margin-top:2vh;">
+          <img src="assets/img/Project/Hypermnesia/hypermnesia cover.jpg" alt="Hypermnesia cover" style="width:100%;display:block;">
+        </div>
+      </div>
+
+      <div data-reveal style="margin-top:20px;margin-bottom:2vh;margin-left:2vh;opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);">
+        <h3 style="font-size:24px;font-weight:400;margin:24px 0;">Site Analysis</h3>
+        <p style="font-size:18px;font-weight:300;line-height:1.7;margin:0;">Keshavarz boulevard, one of the oldest boulevards in Tehran in the central part of the city, has hosted most of the educational, historical and cultural places in Tehran, including different faculties of the University of Tehran which are distributed in the area.<br>The intended site is located between Keshavarz boulevard and Poursina alley, currently used as a parking lot, and a 5 minute walk to the main campus. Also, it is located in front of one of the largest parks in the area, called Lale park.</p>
+      </div>
+
+      <div data-reveal style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;align-items:start;margin:20px 5vh 5vh;opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);">
+        <img src="assets/img/Project/Hypermnesia/Balcony Detail.png" alt="Balcony detail" style="width:100%;display:block;">
+        <img src="assets/img/Project/Hypermnesia/site-2.png" alt="Site" style="width:100%;display:block;">
+      </div>
+
+      <div data-reveal style="margin-top:20px;margin-bottom:2vh;margin-left:2vh;opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);">
+        <h3 style="font-size:24px;font-weight:400;margin:24px 0;">Collage</h3>
+        <p style="font-size:18px;font-weight:300;line-height:1.7;margin:0;">Collage, an exciting way of waking architects’ unconscious, offers different approaches to beginning a project rather than other conceptual methods. This method contains:<br>0. Initial research on psychological, educational and social aspects of users.<br>1. Making a collage from different types of pictures<br>2. Creating meaningful spaces by sketching from collages<br>3. Analyzing every collage based on the colors, lines, areas, lights etc.<br>4. A preliminary effort of creating every space’s quality in several etude models.<br>5. Extracting architectural drawings including plans.<br>6. Observing architectural proportions and adding the required parts that were not mentioned in the above sections.</p>
+      </div>
+
+      <div data-reveal style="margin-top:40px;opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);">
+        <img src="assets/img/Project/Hypermnesia/kolaj1.png" alt="Collage N.1" style="width:100%;display:block;">
+        <h2 style="font-size:18px;font-weight:700;padding-top:20px;margin:0;text-align:center;">Collage N.1</h2>
+      </div>
+
+      <div data-reveal style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;align-items:start;margin-top:40px;opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);">
+        <div>
+          <img src="assets/img/Project/Hypermnesia/4.jpg" alt="Central yard" style="width:100%;display:block;padding-top:15px;">
+          <h2 style="font-size:18px;font-weight:700;padding-top:20px;margin:0;text-align:center;">Central yard</h2>
+        </div>
+        <div>
+          <img src="assets/img/Project/Hypermnesia/5.jpg" alt="Central yard" style="width:100%;display:block;padding-top:15px;">
+          <h2 style="font-size:18px;font-weight:700;padding-top:20px;margin:0;text-align:center;">Central yard</h2>
+        </div>
+        <div>
+          <img src="assets/img/Project/Hypermnesia/2.jpg" alt="Stadium" style="width:100%;display:block;padding-top:15px;">
+          <h2 style="font-size:18px;font-weight:700;padding-top:20px;margin:0;text-align:center;">Stadium</h2>
+        </div>
+      </div>
+
+      <div data-reveal style="margin-top:40px;opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);">
+        <img src="assets/img/Project/Hypermnesia/digi 2 .png" alt="Collage N.2" style="width:100%;display:block;">
+        <h2 style="font-size:18px;font-weight:700;padding-top:20px;margin:0;text-align:center;">Collage N.2</h2>
+      </div>
+
+      <div data-reveal style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;align-items:start;margin-top:40px;opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);">
+        <div>
+          <img src="assets/img/Project/Hypermnesia/777 again-1.png" alt="Main entrance" style="width:100%;display:block;padding-top:15px;">
+          <h2 style="font-size:18px;font-weight:700;padding-top:20px;margin:0;text-align:center;">Main entrance</h2>
+        </div>
+        <div>
+          <img src="assets/img/Project/Hypermnesia/33.jpg" alt="Third entrance" style="width:100%;display:block;padding-top:15px;">
+          <h2 style="font-size:18px;font-weight:700;padding-top:20px;margin:0;text-align:center;">Third entrance</h2>
+        </div>
+        <div>
+          <img src="assets/img/Project/Hypermnesia/7777.png" alt="Second entrance" style="width:100%;display:block;padding-top:15px;">
+          <h2 style="font-size:18px;font-weight:700;padding-top:20px;margin:0;text-align:center;">Second entrance</h2>
+        </div>
+      </div>
+
+      <div data-reveal style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;align-items:start;margin-top:40px;opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);">
+        <div>
+          <img src="assets/img/Project/Hypermnesia/1.jpg" alt="Pass beneath the complex" style="width:100%;display:block;padding-top:15px;">
+          <p style="font-size:18px;font-weight:300;line-height:1.7;margin:16px 0 0;">A pass beneath the complex, next to the coffee, links the main courtyard to the smaller one.</p>
+        </div>
+        <div>
+          <img src="assets/img/Project/Hypermnesia/2-1.jpg" alt="Entries" style="width:100%;display:block;padding-top:15px;">
+          <p style="font-size:18px;font-weight:300;line-height:1.7;margin:16px 0 0;">Three entries. A prime, extended one in the south facing the campus, and one in the north for students. And also one more formal entry for staff.</p>
+        </div>
+        <div>
+          <img src="assets/img/Project/Hypermnesia/3.jpg" alt="Foodcourt membrane" style="width:100%;display:block;padding-top:15px;">
+          <p style="font-size:18px;font-weight:300;line-height:1.7;margin:16px 0 0;">Using a specific, designed tent structure in the free space as the foodcourt’s membrane.</p>
+        </div>
+      </div>
+
+      <div data-reveal style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;align-items:start;margin:40px 5vh 0;opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);">
+        <div>
+          <img src="assets/img/Project/Hypermnesia/plan.jpg" alt="Ground floor plan" style="width:100%;display:block;">
+          <h2 style="font-size:18px;font-weight:700;padding-top:20px;margin:0;text-align:center;">Ground Floor Plan</h2>
+        </div>
+        <div style="display:flex;flex-direction:column;">
+          <img src="assets/img/Project/Hypermnesia/۶۶.jpg" alt="Interior view" style="width:92%;display:block;padding-top:15px;">
+          <img src="assets/img/Project/Hypermnesia/8.jpg" alt="Interior view" style="width:92%;display:block;padding-top:15px;">
+          <img src="assets/img/Project/Hypermnesia/88.jpg" alt="Interior view" style="width:92%;display:block;padding-top:15px;">
+        </div>
+      </div>
+    </div>
+
+    <div data-reveal style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;align-items:start;margin-top:40px;padding:0 12px 5%;box-sizing:border-box;opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);">
+      <img src="assets/img/Project/Hypermnesia/1.png" alt="Model" style="width:100%;display:block;">
+      <img src="assets/img/Project/Hypermnesia/2.png" alt="Model" style="width:100%;display:block;">
+    </div>
+  </div>
+
+  <footer style="padding-top:32px;background:#fff;border-top:1px solid rgba(0,0,0,0.08);">
+    <div style="text-align:center;padding:32px 0 12px;color:#888;font-size:13px;">© 2026 Copyright Text ~ Designed by Hanieh Sotudeh and Claude Design</div>
+    <div style="display:flex;justify-content:center;gap:14px;padding:14px 0 34px;">
+      <a href="https://www.linkedin.com/in/hsotudeh/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,0.25);color:#fff;opacity:0.75;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"></path></svg>
+      </a>
+      <a href="mailto:hanieh.sotudeh10@gmail.com" aria-label="Email" style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,0.25);color:#fff;opacity:0.75;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m2 6 10 7L22 6"></path></svg>
+      </a>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  setRoot = (el) => { this._root = el; if (el) this.observe(); };
+
+  componentDidMount() { this.observe(); }
+
+  observe() {
+    if (!this._root || this._io) return;
+    this._io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (!en.isIntersecting) return;
+        en.target.style.opacity = '1';
+        en.target.style.transform = 'translateY(0)';
+        this._io.unobserve(en.target);
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    this._root.querySelectorAll('[data-reveal]').forEach((el) => this._io.observe(el));
+  }
+
+  componentWillUnmount() { if (this._io) this._io.disconnect(); }
+
+  renderVals() { return { setRoot: this.setRoot }; }
+}
+
+</script>
+</body>
+</html>
