@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300&display=swap" rel="stylesheet">
+  <style>
+    body{margin:0;background:#151515;}
+    a{color:#fff;text-decoration:none;}
+    a:hover{color:rgba(255,255,255,0.6);}
+    ::selection{background:#fff;color:#151515;}
+  </style>
+  <script src="./image-slot.js"></script>
+</helmet>
+
+<div style="background:#151515;color:#fff;font-family:'Lato',sans-serif;min-height:100vh;width:100%;box-sizing:border-box;display:flex;flex-direction:column;">
+
+  <nav style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;padding:22px 32px;margin:15px;">
+    <a href="#" style="display:flex;flex-direction:column;line-height:1.3;">
+      <span style="font-size:20px;font-weight:700;letter-spacing:0.01em;">Hanieh Sotudeh</span>
+      <span style="font-size:12px;font-weight:300;opacity:0.6;">Architect</span>
+    </a>
+    <div style="display:flex;gap:28px;align-items:center;font-size:13px;letter-spacing:0.04em;text-transform:uppercase;">
+      <a href="CV.dc.html">CV</a>
+      <a href="School Projects.dc.html">School Projects</a>
+      <a href="Professional Work.dc.html">Professional Work</a>
+      <a href="Parametric Fun.dc.html">Parametric Fun</a>
+    </div>
+  </nav>
+
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 24px 60px;box-sizing:border-box;text-align:center;{{ viewStyle }}">
+    <div style="width:100%;max-width:900px;margin-bottom:28px;">
+      <image-slot id="home-hero" shape="rect" placeholder="Robo Augmented Workflows Workshop" style="width:100%;aspect-ratio:16/9;"></image-slot>
+    </div>
+    <div style="font-size:11px;letter-spacing:0.25em;opacity:0.45;text-transform:uppercase;margin-bottom:22px;">2021</div>
+    <div style="font-size:28px;font-weight:300;letter-spacing:0.02em;max-width:640px;line-height:1.5;">Robo Augmented Workflows workshop</div>
+    <a href="http://www.digitalfutures.world" target="_blank" rel="noopener noreferrer" style="font-size:14px;opacity:0.6;margin-top:10px;text-decoration:underline;">www.digitalfutures.world</a>
+  </div>
+
+  <footer style="padding-top:32px;background:#151515;">
+    <div style="text-align:center;padding:32px 0 12px;color:#888;font-size:13px;">© 2026 Copyright Text ~ Designed by Hanieh Sotudeh and Claude Design</div>
+    <div style="display:flex;justify-content:center;gap:14px;padding:14px 0 34px;">
+      <a href="https://www.linkedin.com/in/hsotudeh/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,0.25);color:#fff;opacity:0.75;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+      </a>
+      <a href="mailto:hanieh.sotudeh10@gmail.com" aria-label="Email" style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,0.25);color:#fff;opacity:0.75;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 6 10 7L22 6"/></svg>
+      </a>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { viewEntered: false };
+  componentDidMount() {
+    requestAnimationFrame(() => this.setState({ viewEntered: true }));
+  }
+  renderVals() {
+    return {
+      viewStyle: this.state.viewEntered
+        ? 'opacity:1;transform:translateY(0);transition:opacity .55s ease,transform .55s ease;'
+        : 'opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease;'
+    };
+  }
+}
+</script>
+</body>
+</html>
