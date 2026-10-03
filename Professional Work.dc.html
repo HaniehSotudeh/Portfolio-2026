@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    body{margin:0;background:#151515;}
+    a{color:#fff;text-decoration:none;}
+    a:hover{color:rgba(255,255,255,0.6);}
+    ::selection{background:#fff;color:#151515;}
+  </style>
+  <script src="./image-slot.js"></script>
+</helmet>
+
+<div style="background:{{ pageBg }};color:{{ pageColor }};font-family:'Lato',sans-serif;min-height:100vh;width:100%;box-sizing:border-box;display:flex;flex-direction:column;">
+
+  <nav style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;padding:22px 32px;margin:15px;color:{{ pageColor }};">
+    <a href="index.html" style="display:flex;flex-direction:column;line-height:1.3;color:{{ pageColor }};">
+      <span style="font-size:20px;font-weight:700;letter-spacing:0.01em;">Hanieh Sotudeh</span>
+      <span style="font-size:12px;font-weight:300;opacity:0.6;">Architect</span>
+    </a>
+    <div style="display:flex;gap:28px;align-items:center;font-size:13px;letter-spacing:0.04em;text-transform:uppercase;">
+      <a href="CV.dc.html" style="color:{{ pageColor }};">CV</a>
+      <a href="School Projects.dc.html" style="color:{{ pageColor }};">School Projects</a>
+      <a href="#" style="opacity:1;border-bottom:1px solid {{ pageColor }};padding-bottom:2px;color:{{ pageColor }};">Professional Work</a>
+      <a href="Parametric Fun.dc.html" style="color:{{ pageColor }};">Parametric Fun</a>
+    </div>
+  </nav>
+
+  <div style="flex:1;">
+  <sc-if value="{{ locked }}" hint-placeholder-val="{{ true }}">
+    <div style="min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;">
+      <div style="font-size:11px;letter-spacing:0.25em;opacity:0.5;text-transform:uppercase;margin-bottom:18px;">Private Section</div>
+      <div style="font-size:28px;font-weight:300;letter-spacing:0.04em;margin-bottom:6px;text-align:center;">Professional Work</div>
+      <div style="font-size:13px;opacity:0.45;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:48px;">HKS Selected Works — 2023 / 2026</div>
+      <form onSubmit="{{ handleSubmit }}" style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;max-width:320px;">
+        <input type="password" value="{{ inputValue }}" onChange="{{ handleInputChange }}" placeholder="Password" autoFocus="{{ true }}" style="width:100%;box-sizing:border-box;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.3);color:#fff;font-family:'Lato',sans-serif;font-size:16px;letter-spacing:0.05em;padding:10px 4px;text-align:center;outline:none;">
+        <button type="submit" style="background:none;border:1px solid rgba(255,255,255,0.4);color:#fff;font-family:'Lato',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;padding:12px 32px;cursor:pointer;">Enter</button>
+        <sc-if value="{{ hasError }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12px;color:#e08383;letter-spacing:0.03em;">Incorrect password.</div>
+        </sc-if>
+      </form>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ unlocked }}" hint-placeholder-val="{{ false }}">
+    <div style="max-width:1080px;margin:0 auto;padding:20px 24px 120px;box-sizing:border-box;">
+
+      <sc-if value="{{ showGrid }}" hint-placeholder-val="{{ true }}">
+        <div style="{{ viewStyle }}">
+          <div style="text-align:center;padding:40px 0 10px;">
+            <h1 style="font-size:32px;font-weight:300;letter-spacing:0.02em;margin:0 0 10px;">Professional Work</h1>
+            <div style="font-size:14px;opacity:0.55;letter-spacing:0.03em;">Selected projects at HKS Architects, 2023 – 2026</div>
+          </div>
+
+          <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:6px;padding:30px 0 40px;">
+            <sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+              <div onClick="{{ f.onClick }}" style="cursor:pointer;padding:10px 20px 12px;font-size:12px;font-weight:600;letter-spacing:0.03em;text-transform:uppercase;border-radius:50px;background:{{ f.bg }};color:{{ f.color }};transition:background .2s,color .2s;">{{ f.label }}</div>
+            </sc-for>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px;">
+            <sc-for list="{{ filteredProjects }}" as="p" hint-placeholder-count="6">
+              <div onClick="{{ p.onSelect }}" style="cursor:pointer;position:relative;overflow:hidden;border-radius:2px;background:#1c1c1c;grid-column:span {{ p.span }};aspect-ratio:{{ p.frameRatio }};">
+                <div style="position:absolute;inset:0;transition:transform .5s cubic-bezier(.16,1,.3,1),filter .4s ease;filter:grayscale(1);--title-op:0.5;" style-hover="transform:scale(1.06);filter:grayscale(0);--title-op:1;">
+                  <image-slot id="{{ p.thumbId }}" shape="rect" fit="cover" placeholder="{{ p.thumbPlaceholder }}" src="{{ p.thumbSrc }}" style="width:100%;height:100%;"></image-slot>
+                </div>
+                <div style="position:absolute;left:0;right:0;bottom:0;top:55%;pointer-events:none;background:linear-gradient(to top, rgba(0,0,0,0.82), rgba(0,0,0,0));"></div>
+                <div style="position:absolute;left:16px;right:16px;bottom:14px;pointer-events:none;">
+                  <div style="font-size:18px;font-weight:600;color:#fff;line-height:1.25;opacity:var(--title-op,0.5);transition:opacity .4s ease;">{{ p.title }}</div>
+                  <div style="font-size:10px;color:rgba(255,255,255,0.7);margin-top:4px;letter-spacing:0.03em;text-transform:uppercase;">{{ p.kicker }} · {{ p.year }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ showDetail }}" hint-placeholder-val="{{ false }}">
+        <div style="padding-top:30px;{{ detailBgStyle }}{{ viewStyle }}" ref="{{ setContainerRef }}">
+          <div onClick="{{ backToGrid }}" style="cursor:pointer;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.5;margin-bottom:36px;display:inline-block;">← Back to Professional Work</div>
+
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
+            <div style="font-size:11px;letter-spacing:0.25em;opacity:0.45;text-transform:uppercase;">{{ selectedProject.kicker }}</div>
+            <div style="font-size:13px;opacity:0.35;">{{ selectedProject.num }}</div>
+          </div>
+          <h2 style="font-size:42px;font-weight:400;letter-spacing:0.01em;margin:0 0 40px;">{{ selectedProject.title }}</h2>
+
+          <div style="display:flex;gap:56px;align-items:flex-start;flex-wrap:wrap;">
+            <div style="flex:1 1 280px;max-width:320px;position:sticky;top:32px;">
+              <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid {{ detailBorderColor }};">
+                <div><div style="font-size:10px;letter-spacing:0.15em;opacity:0.4;text-transform:uppercase;margin-bottom:6px;">Firm</div><div style="font-size:14px;opacity:0.85;">{{ selectedProject.firm }}</div></div>
+                <div><div style="font-size:10px;letter-spacing:0.15em;opacity:0.4;text-transform:uppercase;margin-bottom:6px;">Year</div><div style="font-size:14px;opacity:0.85;">{{ selectedProject.year }}</div></div>
+                <div><div style="font-size:10px;letter-spacing:0.15em;opacity:0.4;text-transform:uppercase;margin-bottom:6px;">Location</div><div style="font-size:14px;opacity:0.85;">{{ selectedProject.location }}</div></div>
+                <div><div style="font-size:10px;letter-spacing:0.15em;opacity:0.4;text-transform:uppercase;margin-bottom:6px;">Area</div><div style="font-size:14px;opacity:0.85;">{{ selectedProject.area }}</div></div>
+                <div><div style="font-size:10px;letter-spacing:0.15em;opacity:0.4;text-transform:uppercase;margin-bottom:6px;">Program</div><div style="font-size:14px;opacity:0.85;">{{ selectedProject.program }}</div></div>
+                <div><div style="font-size:10px;letter-spacing:0.15em;opacity:0.4;text-transform:uppercase;margin-bottom:6px;">Status</div><div style="font-size:14px;opacity:0.85;">{{ selectedProject.status }}</div></div>
+                <div style="grid-column:span 2;"><div style="font-size:10px;letter-spacing:0.15em;opacity:0.4;text-transform:uppercase;margin-bottom:6px;">{{ selectedProject.creditLabel }}</div><div style="font-size:14px;opacity:0.85;">{{ selectedProject.credit }}</div></div>
+              </div>
+
+              <p style="font-size:16px;font-weight:300;line-height:1.75;opacity:0.85;margin:0 0 32px;">{{ selectedProject.description }}</p>
+
+              <div style="font-size:10px;letter-spacing:0.15em;opacity:0.4;text-transform:uppercase;margin-bottom:14px;">Responsibilities</div>
+              <ul style="margin:0;padding:0;list-style:none;">
+                <sc-for list="{{ selectedProject.responsibilities }}" as="r" hint-placeholder-count="3">
+                  <li style="font-size:14px;line-height:1.65;opacity:0.75;padding-left:18px;position:relative;margin-bottom:8px;">
+                    <span style="position:absolute;left:0;opacity:0.4;">—</span>{{ r }}
+                  </li>
+                </sc-for>
+              </ul>
+            </div>
+
+            <div style="flex:2 1 480px;min-width:0;">
+              <sc-for list="{{ selectedProject.figures }}" as="fig" hint-placeholder-count="1">
+                <div data-reveal="{{ fig.id }}" style="margin-bottom:48px;{{ fig.revealStyle }}">
+                  <sc-if value="{{ fig.hoverSwap }}" hint-placeholder-val="{{ false }}">
+                    <div onPointerDown="{{ fig.onDown }}" onPointerMove="{{ fig.onMove }}" onPointerUp="{{ fig.onUp }}" onPointerCancel="{{ fig.onUp }}" style="position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;cursor:ew-resize;touch-action:none;user-select:none;background:#1c1c1c;">
+                      <image-slot id="{{ fig.afterId }}" shape="rect" fit="cover" placeholder="{{ fig.afterPlaceholder }}" src="{{ fig.afterSrc }}" style="position:absolute;inset:0;width:100%;height:100%;"></image-slot>
+                      <div style="position:absolute;inset:0;clip-path:inset(0 {{ fig.clipRight }} 0 0);">
+                        <image-slot id="{{ fig.id }}" shape="rect" fit="cover" placeholder="{{ fig.placeholder }}" src="{{ fig.src }}" style="width:100%;height:100%;"></image-slot>
+                      </div>
+                      <div style="position:absolute;top:0;bottom:0;left:{{ fig.handleLeft }};width:2px;background:rgba(255,255,255,0.9);pointer-events:none;transform:translateX(-1px);"></div>
+                      <div style="position:absolute;top:50%;left:{{ fig.handleLeft }};width:38px;height:38px;border-radius:50%;background:rgba(20,20,20,0.75);border:1px solid rgba(255,255,255,0.85);pointer-events:none;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;gap:5px;">
+                        <span style="font-size:11px;color:#fff;line-height:1;">◀</span>
+                        <span style="font-size:11px;color:#fff;line-height:1;">▶</span>
+                      </div>
+                      <div style="position:absolute;top:14px;left:14px;pointer-events:none;font-size:9px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#fff;background:rgba(20,20,20,0.6);padding:5px 9px;">Existing</div>
+                      <div style="position:absolute;top:14px;right:14px;pointer-events:none;font-size:9px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#fff;background:rgba(20,20,20,0.6);padding:5px 9px;">Proposed</div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ !fig.hoverSwap }}" hint-placeholder-val="{{ true }}">
+                    <image-slot id="{{ fig.id }}" shape="rect" fit="cover" placeholder="{{ fig.placeholder }}" src="{{ fig.src }}" style="width:100%;aspect-ratio:{{ fig.ratio }};background:#fff;"></image-slot>
+                  </sc-if>
+                  <div style="font-size:11px;opacity:0.4;letter-spacing:0.04em;margin-top:10px;">{{ fig.caption }}</div>
+                </div>
+              </sc-for>
+
+              <sc-for list="{{ selectedProject.compares }}" as="cmp" hint-placeholder-count="0">
+                <div data-reveal="{{ cmp.id }}" style="margin-bottom:48px;{{ cmp.revealStyle }}">
+                  <div onPointerDown="{{ cmp.onDown }}" onPointerMove="{{ cmp.onMove }}" onPointerUp="{{ cmp.onUp }}" onPointerCancel="{{ cmp.onUp }}" style="position:relative;width:100%;aspect-ratio:{{ cmp.ratio }};overflow:hidden;cursor:ew-resize;touch-action:none;user-select:none;background:#1c1c1c;">
+                    <div role="img" aria-label="Proposed" style="position:absolute;inset:0;background-image:url('{{ cmp.after }}');background-size:cover;background-position:center;"></div>
+                    <div style="position:absolute;inset:0;clip-path:inset(0 {{ cmp.clipRight }} 0 0);">
+                      <div role="img" aria-label="Existing" style="width:100%;height:100%;background-image:url('{{ cmp.before }}');background-size:cover;background-position:center;"></div>
+                    </div>
+                    <div style="position:absolute;top:0;bottom:0;left:{{ cmp.handleLeft }};width:2px;background:rgba(255,255,255,0.9);pointer-events:none;transform:translateX(-1px);"></div>
+                    <div style="position:absolute;top:50%;left:{{ cmp.handleLeft }};width:38px;height:38px;border-radius:50%;background:rgba(20,20,20,0.75);border:1px solid rgba(255,255,255,0.85);pointer-events:none;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;gap:5px;">
+                      <span style="font-size:11px;color:#fff;line-height:1;">◀</span>
+                      <span style="font-size:11px;color:#fff;line-height:1;">▶</span>
+                    </div>
+                    <div style="position:absolute;top:14px;left:14px;pointer-events:none;font-size:9px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#fff;background:rgba(20,20,20,0.6);padding:5px 9px;">Existing</div>
+                    <div style="position:absolute;top:14px;right:14px;pointer-events:none;font-size:9px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#fff;background:rgba(20,20,20,0.6);padding:5px 9px;">Proposed</div>
+                  </div>
+                  <div style="font-size:11px;opacity:0.4;letter-spacing:0.04em;margin-top:10px;">{{ cmp.caption }}</div>
+                </div>
+              </sc-for>
+
+              <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px,1fr));gap:14px;">
+                <sc-for list="{{ selectedProject.extraImages }}" as="img" hint-placeholder-count="3">
+                  <div data-reveal="{{ img.id }}" style="{{ img.revealStyle }}">
+                    <image-slot id="{{ img.id }}" shape="rect" fit="cover" placeholder="{{ img.placeholder }}" src="{{ img.src }}" style="width:100%;aspect-ratio:4/3;"></image-slot>
+                    <sc-if value="{{ img.caption }}" hint-placeholder-val="{{ false }}">
+                      
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px,1fr));gap:14px;margin-top:14px;">
+                <sc-for list="{{ selectedProject.extraImages2 }}" as="img2" hint-placeholder-count="2">
+                  <div data-reveal="{{ img2.id }}" style="{{ img2.revealStyle }}">
+                    <image-slot id="{{ img2.id }}" shape="rect" fit="cover" placeholder="{{ img2.placeholder }}" src="{{ img2.src }}" style="width:100%;aspect-ratio:4/3;"></image-slot>
+                    <sc-if value="{{ img2.caption }}" hint-placeholder-val="{{ false }}">
+                      <div style="font-size:11px;opacity:0.4;letter-spacing:0.04em;margin-top:10px;">{{ img2.caption }}</div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+
+              <sc-if value="{{ selectedProject.afterExtraImage }}" hint-placeholder-val="{{ false }}">
+                <div data-reveal="{{ selectedProject.afterExtraImage.id }}" style="margin-top:48px;{{ selectedProject.afterExtraImage.revealStyle }}">
+                  <image-slot id="{{ selectedProject.afterExtraImage.id }}" shape="rect" fit="cover" placeholder="{{ selectedProject.afterExtraImage.placeholder }}" src="{{ selectedProject.afterExtraImage.src }}" style="width:100%;aspect-ratio:4/3;"></image-slot>
+                  <sc-if value="{{ selectedProject.afterExtraImage.caption }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size:11px;opacity:0.4;letter-spacing:0.04em;margin-top:10px;">{{ selectedProject.afterExtraImage.caption }}</div>
+                  </sc-if>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+  </sc-if>
+  </div>
+
+  <footer style="padding-top:32px;{{ footerBgStyle }}">
+    <div style="text-align:center;padding:32px 0 12px;color:#888;font-size:13px;">© 2026 Copyright Text ~ Designed by Hanieh Sotudeh and Claude Design</div>
+    <div style="display:flex;justify-content:center;gap:14px;padding:14px 0 34px;">
+      <a href="https://www.linkedin.com/in/hsotudeh/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;border:1px solid {{ footerIconBorder }};color:{{ pageColor }};opacity:0.75;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"></path></svg>
+      </a>
+      <a href="mailto:hanieh.sotudeh10@gmail.com" aria-label="Email" style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;border:1px solid {{ footerIconBorder }};color:{{ pageColor }};opacity:0.75;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m2 6 10 7L22 6"></path></svg>
+      </a>
+    </div>
+  </footer>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;password&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;7613&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;persistUnlock&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+
+const PROJECTS = [
+  { slug:'cooper-tower-a', thumbSrc:'uploads/Cooper Tower A-5b7b50cb.jpg', thumbRatio:5000/2822, kicker:'COOPER HOSPITAL', category:'Cooper Hospital', title:'TOWER A', num:'01', firm:'HKS Architects', year:'2023', location:'Camden, NJ', area:'335,000 SF', program:'Bed Tower', status:'Under Construction', creditLabel:'Rendering', credit:'© HKS',
+    description:'Phase One of a multiphase project at Cooper University Hospital: Bed Tower Expansion of 335,000 SF, 10-story, 93 beds with 96,000 shell space.',
+    responsibilities:['Reviewed and answered RFIs, submittals, and shop drawings; provided sketches to clarify intent for the contractor.','Supported document revisions during bulletin issuances.','Created scope-of-work diagrams for the owner.','Performed detailing and 3D modeling to capture CA changes and DCA issuances.'],
+    additionalContext:null, thumbPlaceholder:'Exterior rendering',
+    figures:[{id:'cooper-towera-1', caption:'FIG. 01 — Exterior Rendering', placeholder:'Exterior rendering'}] },
+  { slug:'cooper-benson-tower', thumbSrc:'uploads/Gemini_Generated_Image_cz0gj6cz0gj6cz0g.png', thumbRatio:2730/1536, kicker:'COOPER HOSPITAL', category:'Cooper Hospital', title:'BENSON TOWER', num:'02', firm:'HKS Architects', year:'2030', location:'Camden, NJ', area:'300,000 SF (132 Bed)', program:'ED, OR, Bed Tower', status:'Schematic Design', creditLabel:'Render', credit:'© Dandi Zhang',
+    description:'Campus bed tower expansion at Cooper University Hospital, adding Emergency Department, surgical, and administrative capacity to the existing campus. The plan is anchored by a new 10-story (30,000 SF/floor) tower comprising one ED floor, one administrative and cafeteria floor, one surgical and prep/recovery floor, one mechanical floor, and six bed floors (one occupied at opening and five shelled for future expansion), along with supporting scope to enable the expansion.',
+    responsibilities:['Serving as BIM Manager on the technical side of the project.',"Collaborating on the design team developing the tower's exterior design.",'Ran Forma analysis on proposed massing options to evaluate site and building performance.','3D-printed the physical study models.','Produced graphic diagrams and design options presented to the client.','Oversaw an intern producing 3D-printed massing options and graphic diagrams.'],
+    additionalContext:null, thumbPlaceholder:'Massing study rendering',
+    figures:[{id:'cooper-benson-1', caption:'FIG. 01 — Exterior Rendering', placeholder:'Massing study rendering'}] },
+  { slug:'inova-wayfinding', hoverSwap:true, thumbSrc:'uploads/Wayfinding-6dec912b.png', thumbRatio:4032/3024, kicker:'INOVA FAIRFAX MEDICAL CAMPUS', category:'Inova Fairfax', title:'WAYFINDING', num:'07', firm:'HKS Architects', year:'2027', location:'Fairfax, VA', area:'2.5M SF', program:'Masterplan', status:'Under Construction', creditLabel:'Visualization', credit:'In-house, Hanieh Sotudeh',
+    description:'Comprehensive assessment and improvement plan for signage and wayfinding at two hospital campuses: Inova Fairfax Medical Campus (IFMC) and Inova Center for Personalized Health (ICPH).',
+    responsibilities:['Developed a wayfinding and signage assessment and improvement plan across two hospital campuses.','Mapped patient/visitor journeys to tens of destinations during site visits with the signage consultant; produced diagrams for each.','Created campus-wide diagrams and master plan presentations for Triad and FPIC meetings.','Produced exterior and interior renderings using an AI workflow in place of 3D modeling.'],
+    additionalContext:'Rendering & Diagrams', thumbPlaceholder:'Entry point rendering',
+    figures:[
+      {id:'inova-wf-3', caption:'FIG. 01 — Simplified Common Area', placeholder:'Common area rendering'},
+      {id:'inova-wf-2', caption:'FIG. 02 — Simplified Lobby Experience', placeholder:'Lobby rendering'},
+      {id:'inova-wf-1', caption:'FIG. 03 — Proposed Consolidation to a Single Unified Entry Point', placeholder:'Entry point rendering'}
+    ] },
+  { slug:'inova-donor-recovery', thumbSrc:'uploads/Donor Recovery-88dbe84d.jpg', thumbRatio:8192/5464, kicker:'INOVA FAIRFAX MEDICAL CAMPUS', category:'Inova Fairfax', title:'DONOR RECOVERY CENTER', num:'08', firm:'HKS Architects', year:'2024', location:'Fairfax, VA', area:'14,900 SF', program:'ORs, Organ Preservation Lab', status:'Completed', creditLabel:'Photography', credit:'© Evan Thomas',
+    description:'14,900 SF renovation including donor recovery ORs, organ preservation lab, biomed workspace, IT suite and support spaces.',
+    responsibilities:['Attended user group meetings and consultant coordination calls; prepared minutes and coordinated consultant work.','Developed design options and floor plan layouts for user and stakeholder review.','Participated in site survey to document existing conditions.','Supported BIM modeling and documentation across SD, DD, and CD phases.','Coordinated finishes and medical equipment review across the drawing set.','Produced Enscape renderings to communicate design intent.'],
+    additionalContext:'Renderings & Permit Drawing', thumbPlaceholder:'Surgical room photo',
+    figures:[{id:'inova-donor-1', caption:'FIG. 01 — Surgical Room', placeholder:'Surgical room photo'}] },
+  { slug:'inova-locker-room', thumbSrc:'uploads/Locker Room-f5e002b8.png', thumbRatio:2390/1792, kicker:'INOVA FAIRFAX MEDICAL CAMPUS', category:'Inova Fairfax', title:'LOCKER ROOM', num:'09', firm:'HKS Architects', year:'2024', location:'Fairfax, VA', area:'5,000 SF', program:'Locker Room', status:'Completed', creditLabel:'Photography', credit:'© Witt Smith',
+    description:'Expansion of locker rooms, training area and lounge of Inova Fairfax Medical Campus.',
+    responsibilities:['Attended user group meetings and consultant coordination calls, preparing meeting minutes and helping coordinate consultant work.','Supported space programming and test-fits to validate department layouts against user needs.','Supported BIM model development and project documentation across SD, DD, and CD phases.','Coordinated finishes and equipment across the drawing set.'],
+    additionalContext:'Permit Drawing', thumbPlaceholder:'Locker area photo',
+    figures:[
+      {id:'inova-locker-1', caption:'FIG. 01 — Locker Area', placeholder:'Locker area photo'}
+    ] },
+  { slug:'wellspan-blood-bank', thumbSrc:'uploads/Blood Bank Medium-2de0d142.jpeg', thumbRatio:635/396, kicker:'WELLSPAN YORK HOSPITAL', category:'WellSpan York', title:'BLOOD BANK', num:'03', firm:'HKS Architects', year:'2024', location:'York, PA', area:'9,400 SF', program:'Lab', status:'Completed', creditLabel:'Rendering', credit:'In House, Hanieh Sotudeh',
+    description:'Relocation of the existing blood bank to the second floor to meet requirements of the lab master plan study and the new proposed surgical tower.',
+    responsibilities:['Created Enscape renderings to communicate design intent to clients and project stakeholders.','Supported project documentation across SD, DD, and CD phases, and assisted with ASI issuances during construction administration.','Attended user group meetings and consultant coordination calls, preparing meeting minutes and helping coordinate consultant work.','Supported space programming and test-fits to validate department layouts against clinical needs.'],
+    additionalContext:'Renderings & Permit Drawing', thumbPlaceholder:'Blood bank rendering',
+    figures:[
+      {id:'wellspan-blood-1', caption:'FIG. 01 — Blood Bank', placeholder:'Blood bank rendering'},
+      {id:'wellspan-blood-2', caption:'FIG. 02 — Blood Bank', placeholder:'Blood bank rendering'}
+    ] },
+  { slug:'wellspan-mri-expansion', thumbSrc:'uploads/MRI Medium-b810ee61.jpeg', thumbRatio:640/427, kicker:'WELLSPAN YORK HOSPITAL', category:'WellSpan York', title:'MRI EXPANSION', num:'04', firm:'HKS Architects', year:'2026', location:'York, PA', area:'3,000 SF', program:'MRI', status:'Completed', creditLabel:'Rendering', credit:'In House, Hanieh Sotudeh',
+    description:'3,000 SF renovation of an MRI suite including the addition of a 1.5T MRI Class 2 imaging room, upgrades to staff areas, outpatient waiting, inpatient nursing stations, MRI control rooms, and support spaces.',
+    responsibilities:['Created Enscape renderings to communicate design intent to clients and project stakeholders.','Supported project documentation from SD through CD and assisted with CA in ASI issuances.','Compiled record drawings to capture as-built conditions for closeout.'],
+    additionalContext:'Renderings and Permit Drawing', thumbPlaceholder:'MRI suite rendering',
+    figures:[{id:'wellspan-mri-1', caption:'FIG. 01 — Rendering from MRI Suite', placeholder:'MRI suite rendering'}] },
+  { slug:'wellspan-ir-phase', thumbSrc:'uploads/IR Medium-21ef7ab0.jpeg', thumbRatio:640/427, kicker:'WELLSPAN YORK HOSPITAL', category:'WellSpan York', title:'IR PHASE 1 & 2', num:'05', firm:'HKS Architects', year:'2027', location:'York, PA', area:'12,400 SF', program:'IR & Prep Recovery', status:'Under Construction', creditLabel:'Rendering', credit:'In House, Hanieh Sotudeh',
+    description:'Phased relocation of two interventional radiology rooms to a new suite that will include a single-plane and a bi-plane room, two procedure rooms and appropriate support spaces per FGI Guidelines.',
+    responsibilities:['Created Enscape renderings to communicate design intent to clients and project stakeholders.','Supported construction administration through ASI issuance, resolving field and design clarifications.','Compiled record drawings to capture as-built conditions for closeout.','Assisted with Punch List.'],
+    additionalContext:'Renderings', thumbPlaceholder:'IR single plane room rendering',
+    figures:[
+      {id:'wellspan-ir-1', caption:'FIG. 01 — IR Single Plane Room', placeholder:'IR single plane room rendering'},
+      {id:'wellspan-ir-2', caption:'FIG. 02 — PACU Team Station', placeholder:'PACU team station rendering'},
+      {id:'wellspan-ir-3', caption:'FIG. 03 — IR Bi-Plane Room', placeholder:'IR bi-plane room rendering'}
+    ] },
+  { slug:'wellspan-cathlab-5', thumbSrc:'uploads/CathLab Medium-6365811d.jpeg', thumbRatio:634/358, kicker:'WELLSPAN YORK HOSPITAL', category:'WellSpan York', title:'CATHLAB 5 ADDITION', num:'06', firm:'HKS Architects', year:'2025', location:'York, PA', area:'16,000 SF', program:'CathLab', status:'Completed', creditLabel:'Rendering', credit:'In House, Hanieh Sotudeh',
+    description:'7,000 SF renovation and 9,000 SF addition to the cardiovascular services department, increasing capacity from six to ten labs.',
+    responsibilities:['Created Enscape renderings to communicate design intent to clients and project stakeholders.','Assisted the Construction Document set issuance for permit.'],
+    additionalContext:'Renderings', thumbPlaceholder:'CathLab rendering',
+    figures:[{id:'wellspan-cathlab-1', caption:'FIG. 01 — View from One of the CathLabs (#10)', placeholder:'CathLab rendering'}] },
+  { slug:'pursuit-bwmc', thumbSrc:'uploads/BWMC-b5918ad7.png', thumbRatio:5255/2905, kicker:'PURSUIT', category:'Pursuit', title:'BALTIMORE WASHINGTON MEDICAL CENTER', num:'10', firm:'HKS Architects', year:'—', location:'Glen Burnie, MD', area:'228,690 GSF', program:'Inpatient & Outpatient', status:'Pursuit, Not Selected', creditLabel:'Graphics', credit:'In House, Hanieh Sotudeh',
+    description:'Pursuit for a 10-year campus master plan expansion at BWMC, adding inpatient and outpatient capacity to the existing campus. The plan is anchored by a new 8-story bed tower (25,410 SF/floor) — 3 inpatient floors, 2 clinical support floors, and 4 floors of future-conversion shell space — plus additional scope to support this expansion.',
+    responsibilities:['Directed junior staff in the production of a 3D printed physical massing model of the proposed campus expansion.','Supported the interview team by developing massing studies, site plan diagrams, and presentation graphics.','Ran Forma analysis on proposed massing options to evaluate and compare site/building performance.','Contributed to interview and presentation preparation, including assembly and coordination of visual deliverables.'],
+    additionalContext:'Physical Model & Diagrams', thumbPlaceholder:'Forma analysis diagram',
+    figures:[
+      {id:'pursuit-bwmc-2', caption:'FIG. 01 — Diagrams of Proposed Massing Options, Winter Sun Hour Study', placeholder:'Massing option diagrams', ratio:1014/402},
+      {id:'pursuit-bwmc-2b', caption:'FIG. 02 — Diagrams of Proposed Massing Options, Summer Sun Hour Study', placeholder:'Massing option diagrams', ratio:1014/402}
+    ] },
+  { slug:'breathing-threshold', thumbSrc:'uploads/Future Facade Competition-7a6b76bc.png', thumbRatio:2730/1536, kicker:'FUTURE FACADE COMPETITION', category:'Competition', title:'THE BREATHING THRESHOLD', num:'11', firm:'HKS Architects', year:'—', location:'District of Columbia', area:'—', program:'Competition', status:'Competition, Not Selected', creditLabel:'Rendering', credit:'In House, Hanieh Sotudeh',
+    description:'"The Breathing Threshold" reimagines an outdated office building as high-performing multifamily housing, treating the residential façade as an active, breathing system rather than a static enclosure. Developed in a 6-week sprint, the proposal balances resident well-being, energy performance, and market practicality.',
+    responsibilities:['Collaborated in a two-person team to design an adaptive reuse residential façade, leading the panel design portion of the work.','Ran environmental performance analysis in Grasshopper to inform and validate design decisions.','Optimized panel design to respond to the specific site location and climate conditions.','Scripted the parametric panel façade system.','Produced graphics communicating panel design and environmental performance.','Generated AI-assisted renderings (Gemini) to convey the final design intent.'],
+    additionalContext:'Full Presentation', thumbPlaceholder:'Facade exterior rendering',
+    figures:[{id:'facade-breathing-1', caption:'FIG. 01 — Exterior View of Facade', placeholder:'Facade exterior rendering'}] }
+];
+
+const CATEGORIES = ['All','Cooper Hospital','Inova Fairfax','WellSpan York','Pursuit','Competition'];
+
+// Mosaic over a 12-column grid: spans follow each image's orientation, and every
+// tile's frame ratio comes from its own image, so crops stay shallow.
+const COLS = 12;
+const WIDE = 1.3;
+const TALL = 0.6;
+const MIN_FRAME = 0.62;
+const MAX_FRAME = 2.6;
+const TALL_MAX_SPAN = 4;   // extreme portraits stay narrow
+const MAX_ROW_H = 11;      // row height ceiling, in column units
+const MIN_ROW_H = 3.2;     // row height floor, so no row reads as thumbnails
+
+// Before/after slider pairs, paired from the "- Current" / "- Future" file names.
+const COMPARES = {
+  'inova-wayfinding': [
+    { id:'wf-cmp-birdview', caption:'FIG. 04 — Campus Approach, Consolidated Arrival Court', ratio:1738/870,
+      before:'uploads/Hospital - Bird View - Current .PNG', after:'uploads/Hospital - Bird View - Future.png' },
+    { id:'wf-cmp-entrance2', caption:'FIG. 05 — Primary Entrance, Address Identity', ratio:1579/853,
+      before:'uploads/Hospital Entrance 2 - Current.png', after:'uploads/Hospital Entrance 2 - Future.png' },
+    { id:'wf-cmp-canopy', caption:'FIG. 06 — East Canopy Arrival', ratio:3143/2307,
+      before:'uploads/East Canopy - Current.png', after:'uploads/East Canopy - Future .png' },
+    { id:'wf-cmp-eastlobby', caption:'FIG. 07 — East Lobby, Decluttered Waiting', ratio:4032/3024,
+      before:'uploads/East Lobby - Current 1.png', after:'uploads/East Lobby - Future 1.png' },
+    { id:'wf-cmp-dining', caption:'FIG. 08 — Dining Concourse', ratio:4032/2268,
+      before:'uploads/Hospital -  Dining - Current .jpg', after:'uploads/Hospital -  Dining - Future .png' }
+  ]
+};
+
+const EXTRA_CAPTIONS = {
+  'pursuit-bwmc': {
+    1: 'FIG. 03 — Diagrams of Proposed Massing Options'
+  },
+  'cooper-benson-tower': {
+    1: 'FIG. 02 — Exterior Rendering',
+    2: 'FIG. 03 — Exterior Rendering'
+  },
+  'inova-donor-recovery': {
+    1: 'FIG. 02 — Surgical Room',
+    2: 'FIG. 03 — Organ Preservation Lab',
+    3: 'FIG. 04 — Surgical Room'
+  },
+  'breathing-threshold': {
+    1: 'FIG. 02 — Exterior View of Facade',
+    2: 'FIG. 03 — Exterior View of Facade',
+    3: 'FIG. 04 — Exterior View of Facade'
+  }
+};
+
+const EXTRA_SOURCES = {
+  'cooper-benson-tower': {
+    1: 'uploads/Benson-19377daa.png',
+    2: 'uploads/2026.07.14_Exterior_Design_Review_Final Page 017.jpeg'
+  },
+  'inova-donor-recovery': {
+    1: '26679_004_originaljpeg-msb45776-ytey.jpg',
+    2: '26679_004_originaljpeg-msb45ekn-veu4.jpg',
+    3: '26679_004_originaljpeg-msb45oso-t9if.jpg'
+  },
+  'pursuit-bwmc': {
+    1: 'uploads/HKS Portfolio/BWMC/10_Content_Imagery/Presentation Diagram/Option 1_1.png',
+    2: 'uploads/HKS Portfolio/BWMC/10_Content_Imagery/Presentation Diagram/Option 2_1.png',
+    3: 'uploads/HKS Portfolio/BWMC/10_Content_Imagery/Presentation Diagram/Option 1-Axon_2.png'
+  },
+  'breathing-threshold': {
+    1: 'uploads/HKS Portfolio/Future Facade Competition/+presentation-assets/+render/Corner - Exterior .png',
+    2: 'uploads/HKS Portfolio/Future Facade Competition/+presentation-assets/+render/North Facade.png',
+    3: 'uploads/HKS Portfolio/Future Facade Competition/+presentation-assets/+render/SOUTH.png'
+  }
+};
+
+const FIG_SOURCES = {
+  'cooper-towera-1': 'uploads/Cooper Tower A-5b7b50cb.jpg',
+  'cooper-benson-1': 'uploads/Gemini_Generated_Image_cz0gj6cz0gj6cz0g.png',
+  'inova-wf-3': 'uploads/HKS Portfolio/WAYFINDING/AI Rendering/Hospital Grey Garage Corridor - Current.jpeg',
+  'inova-wf-2': 'uploads/Hospital Lobby Reception - Current.jpg',
+  'inova-wf-1': 'uploads/HKS Portfolio/WAYFINDING/AI Rendering/Hospital - Entrance 1.1 - Current.png',
+  'inova-donor-1': 'uploads/Donor Recovery-88dbe84d.jpg',
+  'inova-locker-1': 'uploads/Locker Room-f5e002b8.png',
+  'wellspan-blood-1': 'uploads/Blood Bank Medium-2de0d142.jpeg',
+  'wellspan-blood-2': 'uploads/Blood Bank Medium-2de0d142.jpeg',
+  'wellspan-mri-1': 'uploads/MRI Medium-b810ee61.jpeg',
+  'wellspan-ir-1': 'uploads/HKS Portfolio/IR1&2/20230915_IR IMAGING ROOM.jpg',
+  'wellspan-ir-2': 'uploads/HKS Portfolio/IR1&2/20230915_PREP_RECOVERY BAYS 01.jpg',
+  'wellspan-ir-3': 'uploads/HKS Portfolio/IR1&2/20230915_PREP_RECOVERY BAYS 02.jpg',
+  'wellspan-cathlab-1': 'uploads/CathLab Medium-6365811d.jpeg',
+  'pursuit-bwmc-2': 'uploads/HKS Portfolio/BWMC/Sun Hour - December 21.png',
+  'pursuit-bwmc-2b': 'uploads/HKS Portfolio/BWMC/Sun Hour - March 21.png',
+  'facade-breathing-1': 'uploads/Future Facade Competition-7a6b76bc.png'
+};
+
+const FIG_AFTER_SOURCES = {
+  'inova-wf-3': 'uploads/HKS Portfolio/WAYFINDING/AI Rendering/Hospital Grey Garage Corridor - Future.png',
+  'inova-wf-2': 'uploads/Hospital Lobby Reception - Future.png',
+  'inova-wf-1': 'uploads/Hospital - Entrance 1.1A - Future.png'
+};
+
+const AFTER_EXTRA_SOURCES = {
+  'breathing-threshold': 'uploads/HKS Portfolio/Future Facade Competition/+presentation-assets/+render/Interior_.png'
+};
+
+class Component extends DCLogic {
+  state = { authenticated: false, input: '', hasError: false, activeFilter: 'All', selectedSlug: null, revealed: {}, viewEntered: false, compare: {} };
+  _dragId = null;
+  _observer = null;
+  _containerEl = null;
+
+  componentDidMount() {
+    if (this.props.persistUnlock !== false) {
+      try {
+        if (sessionStorage.getItem('hks-portfolio-unlocked') === '1') this.setState({ authenticated: true });
+      } catch (e) {}
+    }
+    const hash = (window.location.hash || '').replace('#', '');
+    if (hash) this.setState({ selectedSlug: hash });
+    requestAnimationFrame(() => this.setState({ viewEntered: true }));
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.selectedSlug !== this.state.selectedSlug) {
+      this.setState({ viewEntered: false });
+      requestAnimationFrame(() => {
+        this.setupObserver();
+        requestAnimationFrame(() => this.setState({ viewEntered: true }));
+      });
+    }
+  }
+
+  setContainerRef = (el) => {
+    this._containerEl = el;
+    if (el) this.setupObserver();
+  };
+
+  setupObserver() {
+    if (!this._containerEl) return;
+    if (this._observer) this._observer.disconnect();
+    this._observer = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) {
+          const id = en.target.getAttribute('data-reveal');
+          if (id) this.setState((s) => (s.revealed[id] ? null : { revealed: { ...s.revealed, [id]: true } }));
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    this._containerEl.querySelectorAll('[data-reveal]').forEach((el) => this._observer.observe(el));
+  }
+
+  checkPassword = (e) => {
+    e.preventDefault();
+    const correct = this.props.password ?? 'hks2026';
+    if (this.state.input === correct) {
+      this.setState({ authenticated: true, hasError: false });
+      if (this.props.persistUnlock !== false) {
+        try { sessionStorage.setItem('hks-portfolio-unlocked', '1'); } catch (e) {}
+      }
+    } else {
+      this.setState({ hasError: true });
+    }
+  };
+
+  setCompare = (id, e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    if (!rect.width) return;
+    const pct = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+    this.setState((s) => ({ compare: { ...s.compare, [id]: pct } }));
+  };
+
+  select = (slug) => {
+    this.setState({ selectedSlug: slug, revealed: {} });
+    try { window.location.hash = slug; } catch (e) {}
+  };
+
+  back = () => {
+    this.setState({ selectedSlug: null });
+    try { window.location.hash = ''; } catch (e) {}
+  };
+
+  evenSpans(n) {
+    if (n <= 1) return [COLS];
+    if (n === 2) return [6, 6];
+    if (n === 3) return [4, 4, 4];
+    if (n === 4) return [3, 3, 3, 3];
+    return new Array(n).fill(Math.floor(COLS / n));
+  }
+
+  rowsFor(list) {
+    const wide = (p) => p && p.ratio >= WIDE;
+    const tall = (p) => p && p.ratio < TALL;
+    const groups = [];
+    let i = 0, row = 0;
+    while (i < list.length) {
+      const left = list.length - i;
+      let spans;
+      if (tall(list[i])) {
+        // Extreme portraits never get widened — a wider slot would also make the
+        // row taller. Split the run of tall items into evenly sized rows instead.
+        let runLength = 0;
+        while (list[i + runLength] && tall(list[i + runLength])) runLength += 1;
+        const perRow = runLength % 4 === 0 ? 4 : (runLength % 3 === 0 ? 3 : Math.min(runLength, 4));
+        const span = Math.min(TALL_MAX_SPAN, Math.floor(COLS / perRow));
+        spans = new Array(Math.min(perRow, left)).fill(span);
+      }
+      else if (left === 1) spans = [wide(list[i]) ? 8 : 6];
+      else if (wide(list[i]) && wide(list[i + 1])) spans = row % 2 ? [5, 7] : [7, 5];
+      else if (wide(list[i])) spans = [8, 4];
+      else if (wide(list[i + 1])) spans = [4, 8];
+      else if (left === 2) spans = [6, 6];
+      else spans = [4, 4, 4];
+      groups.push(spans.map((s, k) => ({ item: list[i + k], span: s })));
+      i += spans.length;
+      row += 1;
+    }
+    const last = groups[groups.length - 1];
+    if (groups.length > 1 && last.length === 1 && !tall(last[0].item)) {
+      const orphan = groups.pop();
+      const merged = groups.pop().concat(orphan);
+      const spans = this.evenSpans(merged.length);
+      groups.push(merged.map((c, k) => ({ item: c.item, span: spans[k] })));
+    }
+    return groups;
+  }
+
+  cellsFor(list) {
+    const out = [];
+    this.rowsFor(list).forEach((row) => {
+      const widths = row.map((c) => c.span);
+      let h = row.reduce((sum, c, k) => sum + widths[k] / c.item.ratio, 0) / row.length;
+      h = Math.min(h, Math.min.apply(null, widths) / MIN_FRAME);
+      h = Math.max(h, Math.max.apply(null, widths) / MAX_FRAME);
+      h = Math.min(h, MAX_ROW_H); // absolute cap, so no row towers over the others
+      h = Math.max(h, MIN_ROW_H); // absolute floor, so no row shrinks to thumbnails
+      row.forEach((c, k) => out.push({ span: c.span, frameRatio: widths[k] / h }));
+    });
+    return out;
+  }
+
+  renderVals() {
+    const activeFilter = this.state.activeFilter;
+    const revealed = this.state.revealed;
+    const reveal = (id) => revealed[id]
+      ? 'opacity:1;transform:translateY(0) scale(1);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);'
+      : 'opacity:0;transform:translateY(48px) scale(0.98);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);';
+    const gridList = (activeFilter === 'All' ? PROJECTS : PROJECTS.filter(p => p.category === activeFilter))
+      .map(p => ({ ...p, ratio: p.thumbRatio || 4 / 3 }));
+    const cells = this.cellsFor(gridList);
+    const filteredProjects = gridList.map((p, i) => ({
+      ...p,
+      thumbId: 'thumb-' + p.slug,
+      onSelect: () => this.select(p.slug),
+      span: cells[i].span,
+      frameRatio: cells[i].frameRatio.toFixed(4)
+    }));
+    const baseProject = PROJECTS.find(p => p.slug === this.state.selectedSlug) || null;
+    const selectedProject = baseProject ? {
+      ...baseProject,
+      figures: baseProject.figures.map(fig => {
+        const pct = this.state.compare[fig.id] != null ? this.state.compare[fig.id] : 50;
+        return {
+          ...fig,
+          hoverSwap: !!baseProject.hoverSwap,
+          afterId: fig.id + '-after',
+          afterPlaceholder: 'Proposed: ' + fig.placeholder,
+          src: FIG_SOURCES[fig.id] || '',
+          afterSrc: FIG_AFTER_SOURCES[fig.id] || '',
+          ratio: fig.ratio || 4/3,
+          revealStyle: reveal(fig.id),
+          clipRight: (100 - pct).toFixed(2) + '%',
+          handleLeft: pct.toFixed(2) + '%',
+          onDown: (e) => { this._dragId = fig.id; this.setCompare(fig.id, e); },
+          onMove: (e) => { if (this._dragId === fig.id) this.setCompare(fig.id, e); },
+          onUp: () => { this._dragId = null; }
+        };
+      }),
+      compares: (COMPARES[baseProject.slug] || []).map(c => {
+        const pct = this.state.compare[c.id] != null ? this.state.compare[c.id] : 50;
+        return {
+          ...c,
+          revealStyle: reveal(c.id),
+          clipRight: (100 - pct).toFixed(2) + '%',
+          handleLeft: pct.toFixed(2) + '%',
+          onDown: (e) => { this._dragId = c.id; this.setCompare(c.id, e); },
+          onMove: (e) => { if (this._dragId === c.id) this.setCompare(c.id, e); },
+          onUp: () => { this._dragId = null; }
+        };
+      }),
+      extraImages: (['cooper-tower-a','inova-wayfinding','inova-locker-room','wellspan-blood-bank','wellspan-ir-phase'].includes(baseProject.slug) ? [] : baseProject.slug === 'pursuit-bwmc' ? [1,2,3] : (baseProject.slug === 'cooper-benson-tower' || baseProject.slug === 'wellspan-mri-expansion' || baseProject.slug === 'wellspan-cathlab-5') ? [1,2] : [1,2,3]).map(n => {
+        const id = baseProject.slug + '-extra-' + n;
+        const captions = EXTRA_CAPTIONS[baseProject.slug] || {};
+        const sources = EXTRA_SOURCES[baseProject.slug] || {};
+        return { id, placeholder: captions[n] || ('Additional image ' + n), caption: captions[n] || '', src: sources[n] || '', revealStyle: reveal(id) };
+      }),
+      extraImages2: (baseProject.slug === 'wellspan-mri-expansion' ? [3,4] : []).map(n => {
+        const id = baseProject.slug + '-extra-' + n;
+        const captions = EXTRA_CAPTIONS[baseProject.slug] || {};
+        const sources = EXTRA_SOURCES[baseProject.slug] || {};
+        return { id, placeholder: captions[n] || ('Additional image ' + n), caption: captions[n] || '', src: sources[n] || '', revealStyle: reveal(id) };
+      }),
+      afterExtraImage: baseProject.slug === 'breathing-threshold'
+        ? { id: baseProject.slug + '-after-extra', placeholder: 'FIG. 05 — Exterior View of Facade', caption: 'FIG. 05 — Exterior View of Facade', src: AFTER_EXTRA_SOURCES[baseProject.slug] || '', revealStyle: reveal(baseProject.slug + '-after-extra') }
+        : null
+    } : null;
+    const viewStyle = this.state.viewEntered
+      ? 'opacity:1;transform:translateY(0);transition:opacity .55s ease,transform .55s ease;'
+      : 'opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease;';
+    const isBWMC = !!selectedProject && selectedProject.slug === 'pursuit-bwmc';
+    const pageBg = isBWMC ? '#fff' : '#151515';
+    const pageColor = isBWMC ? '#111' : '#fff';
+    const detailBgStyle = isBWMC ? 'background:#fff;color:#111;margin:0 -24px;padding-left:24px;padding-right:24px;' : '';
+    const detailBorderColor = isBWMC ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)';
+    const footerBgStyle = 'background:' + pageBg + ';' + (isBWMC ? 'border-top:1px solid rgba(0,0,0,0.08);' : '');
+    const footerIconBorder = isBWMC ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.25)';
+    return {
+      pageBg, pageColor, detailBgStyle, detailBorderColor, footerBgStyle, footerIconBorder,
+      locked: !this.state.authenticated,
+      unlocked: this.state.authenticated,
+      inputValue: this.state.input,
+      hasError: this.state.hasError,
+      handleInputChange: (e) => this.setState({ input: e.target.value, hasError: false }),
+      handleSubmit: this.checkPassword,
+      filters: CATEGORIES.map(c => ({
+        label: c, onClick: () => this.setState({ activeFilter: c }),
+        bg: c === activeFilter ? '#f6f0f0' : 'transparent',
+        color: c === activeFilter ? '#000' : '#fff'
+      })),
+      filteredProjects,
+      showGrid: !selectedProject,
+      showDetail: !!selectedProject,
+      selectedProject,
+      backToGrid: this.back,
+      viewStyle,
+      setContainerRef: this.setContainerRef
+    };
+  }
+}
+
+</script>
+</body>
+</html>
